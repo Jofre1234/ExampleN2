@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recetas Deliciosas</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Estilos personalizados */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f7f5; /* Un tono crema claro para el fondo */
+        }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+
+    <!-- Encabezado -->
+    <header class="bg-white shadow-md">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#" id="brandLink" class="text-2xl font-bold text-orange-600">Recetas Deliciosas</a>
+            <div class="flex space-x-4">
+                <a href="#" id="homeLink" class="text-gray-600 hover:text-orange-600">Inicio</a>
+                <a href="#" id="categoriesLink" class="text-gray-600 hover:text-orange-600">Categorías</a>
+                <a href="#" id="aboutLink" class="text-gray-600 hover:text-orange-600">Sobre Nosotros</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Contenido Principal -->
+    <main class="container mx-auto px-6 py-8 flex-grow">
+
+        <!-- Sección de Búsqueda y Título -->
+        <section id="search-section" class="text-center mb-12">
+            <h1 class="text-4xl font-bold text-gray-800 mb-4">Encuentra tu Próxima Receta Favorita</h1>
+            <p class="text-gray-600 mb-6">Explora cientos de recetas fáciles y deliciosas para cualquier ocasión.</p>
+            <div class="max-w-lg mx-auto">
+                <input type="text" id="searchInput" placeholder="Buscar por nombre de receta..." class="w-full px-4 py-3 border rounded-full focus:outline-none focus:ring-2 focus:ring-orange-500">
+            </div>
+        </section>
+
+        <!-- Contenedor para Recetas -->
+        <div id="recipe-container">
+            <!-- Vista de la cuadrícula de recetas -->
+            <section id="recipe-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+                <!-- Las tarjetas de recetas se insertarán aquí con JavaScript -->
+            </section>
+
+            <!-- Controles de Paginación -->
+            <div id="pagination-controls" class="flex justify-center items-center space-x-2 mt-12">
+                <!-- Los botones de paginación se insertarán aquí -->
+            </div>
+
+            <!-- Vista de detalle de la receta (oculta por defecto) -->
+            <section id="recipe-detail" class="hidden max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-lg">
+                <!-- El contenido del detalle de la receta se insertará aquí -->
+            </section>
+        </div>
+        
+        <!-- Vista de Categorías (oculta por defecto) -->
+        <section id="categories-view" class="hidden max-w-4xl mx-auto">
+            <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center">Categorías de Recetas</h2>
+            <div id="categories-container" class="flex flex-wrap justify-center gap-4">
+                <!-- Las categorías se insertarán aquí con JavaScript -->
+            </div>
+        </section>
+
+        <!-- Vista Sobre Nosotros (oculta por defecto) -->
+        <section id="about-view" class="hidden max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-lg">
+            <div class="flex flex-col md:flex-row items-center gap-8">
+                <!-- Columna de la imagen -->
+                <div class="md:w-1/3">
+                    <img src="https://images.pexels.com/photos/376464/pexels-photo-376464.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="[Imagen de un plato de panqueques decorado con frutas]" class="rounded-lg shadow-md object-cover h-full w-full">
+                </div>
+                <!-- Columna del texto -->
+                <div class="md:w-2/3">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-4">Nuestra Pasión por la Cocina</h2>
+                    <p class="text-gray-700 mb-4 leading-relaxed">
+                        ¡Bienvenido a <strong>Recetas Deliciosas</strong>! Nacimos de un amor compartido por la buena comida y la alegría de crear en la cocina. Creemos que cocinar no tiene por qué ser complicado para ser espectacular.
+                    </p>
+                    <p class="text-gray-700 mb-4 leading-relaxed">
+                        Nuestra misión es ser tu rincón de confianza en internet para encontrar inspiración culinaria. Aquí compartimos recetas accesibles, probadas y deliciosas, diseñadas para cocineros de todos los niveles.
+                    </p>
+                    <p class="text-gray-700 leading-relaxed">
+                        Desde platos tradicionales que evocan recuerdos hasta creaciones modernas que despertarán tu creatividad, nuestro catálogo está en constante crecimiento. ¡Explora, cocina y, sobre todo, disfruta!
+                    </p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Pie de Página -->
+    <footer class="bg-gray-800 text-white mt-auto">
+        <div class="container mx-auto px-6 py-6 text-center">
+            <p>&copy; 2024 Recetas Deliciosas. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        // --- BASE DE DATOS DE RECETAS ---
+        const recipes = [
+            { id: 1, name: "Seco de Pollo Ecuatoriano", category: "Almuerzos", image: "https://cevicheria7mares.ec/wp-content/uploads/2020/10/SECO-DE-POLLO-Cevicheria-7-Mares.jpg", description: "Un guiso tradicional ecuatoriano lleno de sabor, perfecto para acompañar con arroz amarillo.", ingredients: ["4 presas de pollo", "1 pimiento verde", "1 cebolla colorada", "2 tomates", "4 dientes de ajo", "1/2 taza de cilantro", "1 cdta de comino", "1 cdta de achiote", "1 taza de cerveza", "Sal y pimienta"], instructions: ["Sazona el pollo. Dora en una olla con achiote.", "Prepara un refrito con cebolla, pimiento, tomate y ajo.", "Licúa el refrito con cilantro y cerveza. Vierte sobre el pollo.", "Cocina a fuego bajo por 30-40 min. Sirve con arroz."] },
+            { id: 2, name: "Ceviche de Camarón", category: "Mariscos", image: "https://i0.wp.com/recetaskwa.com/wp-content/uploads/2023/09/ceviche_camaron.jpg?ssl=1", description: "Fresco, cítrico y delicioso, el ceviche de camarón es el plato perfecto para un día caluroso.", ingredients: ["1 lb de camarones", "1 taza de jugo de limón", "1/2 taza de jugo de naranja", "1 cebolla colorada", "2 tomates", "1/2 taza de cilantro", "Salsa de tomate", "Mostaza", "Sal y aceite"], instructions: ["Mezcla camarones, cebolla, tomate y cilantro.", "Agrega jugos, salsa de tomate y mostaza.", "Sazona y marina en la refri por 30 min. Sirve frío."] },
+            { id: 3, name: "Encebollado de Pescado", category: "Sopas", image: "https://img.freepik.com/foto-gratis/vista-superior-apetitoso-tazon-pozole_23-2149248628.jpg", description: "La sopa insignia de la costa ecuatoriana, ideal para recargar energías.", ingredients: ["2 lbs de albacora", "2 lbs de yuca", "2 cebollas coloradas", "2 tomates", "1 pimiento verde", "Ajo, cilantro, comino", "Sal y pimienta"], instructions: ["Cocina el pescado con verduras. Reserva el caldo.", "Cocina la yuca en el caldo. Licúa una parte para espesar.", "Desmenuza el pescado. Sirve la sopa con pescado y un curtido de cebolla."] },
+            { id: 4, name: "Pizza Margarita Clásica", category: "Cenas", image: "https://images.pexels.com/photos/1146760/pexels-photo-1146760.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1", description: "La reina de las pizzas. Simpleza y sabor con ingredientes frescos y de calidad.", ingredients: ["1 base de pizza", "1/2 taza de salsa de tomate", "200g de mozzarella fresca", "Albahaca fresca", "Aceite de oliva", "Sal y pimienta"], instructions: ["Precalienta el horno a 220°C.", "Cubre la base con salsa, luego mozzarella.", "Hornea 10-15 min. Decora con albahaca y aceite de oliva."] },
+            { id: 5, name: "Flan de Caramelo Casero", category: "Postres", image: "https://www.recetasnestle.com.mx/sites/default/files/srh_recipes/54c6cbcbc6d611e056122d64560cd9c1.jpg", description: "Un postre clásico, cremoso y suave, bañado en un delicioso caramelo dorado.", ingredients: ["1 lata de leche condensada", "1 lata de leche evaporada", "4 huevos", "Vainilla", "1 taza de azúcar para caramelo"], instructions: ["Haz un caramelo con el azúcar y viértelo en un molde.", "Licúa los demás ingredientes y vierte en el molde.", "Hornea a baño María a 180°C por 50-60 min. Enfría y desmolda."] },
+            { id: 6, name: "Ensalada César con Pollo", category: "Ensaladas", image: "https://images.pexels.com/photos/1211887/pexels-photo-1211887.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1", description: "Una ensalada clásica y completa, perfecta como plato único o acompañamiento.", ingredients: ["1 lechuga romana", "2 pechugas de pollo", "Crutones", "Queso parmesano", "Aderezo César"], instructions: ["Cocina el pollo a la plancha y córtalo.", "Mezcla la lechuga, pollo, crutones y queso.", "Añade el aderezo justo antes de servir."] },
+            { id: 7, name: "Sopa de Lentejas", category: "Sopas", image: "https://media.istockphoto.com/id/120599192/es/foto/lenteja-frescos-estofado.jpg?s=612x612&w=0&k=20&c=o4Ua7hzI_--6iWheHi7c1EF32kvbTxRa26xd0MlbyTs=", description: "Una sopa reconfortante y nutritiva, llena de sabor casero.", ingredients: ["1 taza de lentejas", "1 zanahoria", "1 rama de apio", "1/2 cebolla", "Ajo, laurel, chorizo (opcional)", "4 tazas de caldo"], instructions: ["Sofríe las verduras.", "Añade lentejas, caldo, laurel y chorizo.", "Cocina a fuego lento por 40-50 min."] },
+            { id: 8, name: "Limonada Refrescante", category: "Bebidas", image: "https://images.pexels.com/photos/338713/pexels-photo-338713.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1", description: "La bebida perfecta para un día de calor, fácil y rápida de preparar.", ingredients: ["1 taza de jugo de limón", "1 taza de azúcar", "4 tazas de agua fría", "Menta y hielo"], instructions: ["Disuelve el azúcar en agua caliente para hacer un sirope.", "Enfría y mezcla con el jugo de limón y agua fría. Sirve con hielo."] },
+            { id: 9, name: "Tigrillo Ecuatoriano", category: "Desayunos", image: "https://recetas123.net/wp-content/uploads/tigrillo1-1.jpg", description: "Un desayuno contundente de plátano verde, queso y huevo.", ingredients: ["4 plátanos verdes", "1/2 taza de queso fresco", "2 huevos", "Leche, cebolla, cilantro", "Achiote, sal, pimienta"], instructions: ["Cocina y aplasta los plátanos.", "Haz un refrito, mézclalo con el plátano, queso y huevos.", "Cocina todo junto hasta que cuaje."] },
+            { id: 10, name: "Patacones con Guacamole", category: "Aperitivos", image: "https://img.freepik.com/fotos-premium/aperitivo-ecuatoriano-platano-verde-frito-guacamole-plato-rustico_1007204-36657.jpg?semt=ais_hybrid&w=740&q=80", description: "Crujientes tostones de plátano verde, el acompañante ideal para un guacamole fresco.", ingredients: ["2 plátanos verdes", "Aceite, sal", "Guacamole: 2 aguacates, cebolla, tomate, limón, cilantro"], instructions: ["Fríe rodajas de plátano, aplástalas y vuelve a freír.", "Prepara el guacamole mezclando sus ingredientes. Sirve junto."] },
+            { id: 11, name: "Quinotto de Champiñones", category: "Vegetariano", image: "https://images.pexels.com/photos/5409015/pexels-photo-5409015.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1", description: "Una versión saludable y deliciosa del risotto, usando quinua.", ingredients: ["1 taza de quinua", "2 tazas de caldo", "200g de champiñones", "Cebolla, ajo, vino blanco (opcional)", "Queso parmesano"], instructions: ["Sofríe cebolla, ajo y champiñones.", "Añade la quinua y tuéstala. Agrega el caldo y cocina 15-20 min.", "Incorpora el queso y sirve."] },
+            { id: 12, name: "Hamburguesa Clásica", category: "Comida Rápida", image: "https://images.pexels.com/photos/1639557/pexels-photo-1639557.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1", description: "La hamburguesa perfecta para hacer en casa. Jugosa, sabrosa y personalizable.", ingredients: ["500g de carne molida", "4 panes", "Queso cheddar", "Lechuga, tomate, cebolla", "Salsas al gusto"], instructions: ["Forma las hamburguesas y sazona.", "Cocina a la parrilla 3-5 min por lado. Añade queso al final.", "Arma con tus ingredientes favoritos."] },
+            { id: 13, name: "Lomo Saltado", category: "Almuerzos", image: "https://img.freepik.com/foto-gratis/primer-plano-carne-asada-salsa-verduras-patatas-fritas-plato-sobre-mesa_181624-35847.jpg?semt=ais_hybrid&w=740&q=80", description: "Un plato icónico de la cocina peruana que fusiona sabores incas y asiáticos.", ingredients: ["500g de lomo de res", "1 cebolla roja", "2 tomates", "Ají amarillo", "Salsa de soja, vinagre", "Cilantro, papas fritas, arroz"], instructions: ["Saltea la carne en un wok caliente. Reserva.", "Saltea las verduras. Vuelve a incorporar la carne y añade las salsas.", "Sirve con arroz y papas fritas."] },
+            { id: 14, name: "Salmón al Horno con Espárragos", category: "Cenas", image: "https://images.pexels.com/photos/6210876/pexels-photo-6210876.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1", description: "Una cena ligera, saludable y elegante que se prepara en minutos.", ingredients: ["2 filetes de salmón", "1 manojo de espárragos", "Aceite de oliva", "Limón en rodajas", "Sal, pimienta, eneldo"], instructions: ["Precalienta el horno a 200°C.", "Coloca los espárragos y el salmón en una bandeja. Sazona.", "Hornea por 12-15 min."] },
+            { id: 15, name: "Tacos al Pastor", category: "Comida Rápida", image: "https://images.pexels.com/photos/2087748/pexels-photo-2087748.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1", description: "El sabor de México en un taco. Carne de cerdo marinada con achiote y especias.", ingredients: ["500g de lomo de cerdo", "Jugo de piña", "Pasta de achiote", "Vinagre, comino, orégano", "Tortillas de maíz, piña, cebolla, cilantro"], instructions: ["Marina la carne en achiote y especias. Cocínala.", "Sírvela en tortillas con piña, cebolla y cilantro."] },
+            { id: 16, name: "Pastel de Tres Leches", category: "Postres", image: "https://images.pexels.com/photos/827513/pexels-photo-827513.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1", description: "Un bizcocho esponjoso bañado en una mezcla de tres leches, cubierto con merengue.", ingredients: ["Bizcocho: 6 huevos, 2 tazas de harina, azúcar", "Salsa: leche condensada, leche evaporada, crema de leche", "Merengue"], instructions: ["Hornea un bizcocho básico.", "Pínchalo y báñalo con la mezcla de tres leches fría.", "Cubre con merengue."] },
+            { id: 17, name: "Locro de Papa", category: "Sopas", image: "https://img.freepik.com/foto-gratis/delicioso-estofado-goulash-mesa_23-2149371739.jpg?semt=ais_incoming&w=740&q=80", description: "Una cremosa y tradicional sopa de papa ecuatoriana, servida con queso y aguacate.", ingredients: ["2 lbs de papas", "1/2 taza de leche", "1 taza de queso fresco", "Cebolla blanca, achiote, sal", "Aguacate para servir"], instructions: ["Haz un refrito con cebolla y achiote. Añade las papas y agua.", "Cocina hasta que las papas estén suaves. Aplasta algunas para espesar.", "Añade leche y queso. Sirve con aguacate."] },
+            { id: 18, name: "Arroz con Pollo", category: "Almuerzos", image: "https://images.pexels.com/photos/9738987/pexels-photo-9738987.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1", description: "Un clásico latinoamericano, arroz cocido con pollo desmenuzado y vegetales.", ingredients: ["1 pollo entero", "2 tazas de arroz", "Zanahoria, arvejas, pimiento", "Cebolla, ajo, achiote", "Cilantro"], instructions: ["Cocina y desmenuza el pollo. Reserva el caldo.", "Haz un refrito y sofríe el arroz.", "Añade el caldo de pollo y cocina el arroz con los vegetales. Mezcla con el pollo."] },
+            { id: 19, name: "Humitas Ecuatorianas", category: "Desayunos", image: "https://img.freepik.com/fotos-premium/humitas-relleno-queso_944420-63740.jpg", description: "Pastelitos de maíz tierno (choclo) con queso, cocidos al vapor en hojas de maíz.", ingredients: ["10 choclos tiernos", "1 taza de queso desmenuzado", "1/2 taza de cebolla picada", "2 huevos", "Mantequilla, sal"], instructions: ["Muele los granos de choclo.", "Mezcla con el resto de ingredientes.", "Coloca porciones en hojas de maíz y cocínalas al vapor."] },
+            { id: 20, name: "Pescado Frito con Menestra", category: "Almuerzos", image: "https://img.freepik.com/fotos-premium/vista-superior-plato-blanco-pescado-frito-arroz-ensalada-verduras-mesa-madera_665346-36143.jpg", description: "Un plato popular de la costa: pescado frito crujiente servido con menestra de lentejas y arroz.", ingredients: ["4 filetes de corvina o dorado", "Harina, sal, comino, ajo", "Para la menestra: 1 taza de lentejas, cebolla, pimiento, ajo", "Arroz y patacones para acompañar"], instructions: ["Sazona y enharina el pescado. Fríelo hasta que esté dorado.", "Cocina la menestra de lentejas con un refrito.", "Sirve todo junto."] }
+        ];
+
+        // --- ESTADO Y CONFIGURACIÓN DE PAGINACIÓN ---
+        let currentPage = 1;
+        const recipesPerPage = 8;
+        let currentFilteredRecipes = [...recipes];
+
+
+        // --- ELEMENTOS DEL DOM ---
+        const recipeGrid = document.getElementById('recipe-grid');
+        const recipeDetail = document.getElementById('recipe-detail');
+        const paginationControls = document.getElementById('pagination-controls');
+        const searchInput = document.getElementById('searchInput');
+        const homeLink = document.getElementById('homeLink');
+        const categoriesLink = document.getElementById('categoriesLink');
+        const aboutLink = document.getElementById('aboutLink');
+        const brandLink = document.getElementById('brandLink');
+        const searchSection = document.getElementById('search-section');
+        const recipeContainer = document.getElementById('recipe-container');
+        const categoriesView = document.getElementById('categories-view');
+        const aboutView = document.getElementById('about-view');
+        const categoriesContainer = document.getElementById('categories-container');
+
+        // --- FUNCIONES DE NAVEGACIÓN ---
+
+        const hideAllViews = () => {
+            searchSection.classList.add('hidden');
+            recipeContainer.classList.add('hidden');
+            categoriesView.classList.add('hidden');
+            aboutView.classList.add('hidden');
+            recipeDetail.classList.add('hidden');
+            recipeGrid.classList.remove('hidden');
+            paginationControls.classList.remove('hidden');
+        };
+
+        const showHomeView = () => {
+            hideAllViews();
+            searchSection.classList.remove('hidden');
+            recipeContainer.classList.remove('hidden');
+        };
+        
+        const showCategoriesView = () => {
+            hideAllViews();
+            categoriesView.classList.remove('hidden');
+        };
+
+        const showAboutView = () => {
+            hideAllViews();
+            aboutView.classList.remove('hidden');
+        };
+
+        const showDetailView = (recipeId) => {
+            const recipe = recipes.find(r => r.id === recipeId);
+            if (!recipe) return;
+
+            recipeDetail.innerHTML = `
+                <button id="backButton" class="mb-6 bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600 transition-colors">← Volver</button>
+                <img src="${recipe.image}" alt="[Imagen de ${recipe.name}]" class="w-full h-96 object-cover rounded-lg mb-6">
+                <h2 class="text-4xl font-bold text-gray-800 mb-4">${recipe.name}</h2>
+                <p class="text-gray-600 mb-8">${recipe.description}</p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="md:col-span-1">
+                        <h3 class="text-2xl font-semibold text-gray-700 mb-4 border-b-2 border-orange-500 pb-2">Ingredientes</h3>
+                        <ul class="list-disc list-inside space-y-2 text-gray-600">${recipe.ingredients.map(ing => `<li>${ing}</li>`).join('')}</ul>
+                    </div>
+                    <div class="md:col-span-2">
+                        <h3 class="text-2xl font-semibold text-gray-700 mb-4 border-b-2 border-orange-500 pb-2">Instrucciones</h3>
+                        <ol class="list-decimal list-inside space-y-4 text-gray-700">${recipe.instructions.map(step => `<li>${step}</li>`).join('')}</ol>
+                    </div>
+                </div>
+            `;
+
+            recipeGrid.classList.add('hidden');
+            paginationControls.classList.add('hidden');
+            recipeDetail.classList.remove('hidden');
+            
+            document.getElementById('backButton').addEventListener('click', () => {
+                recipeDetail.classList.add('hidden');
+                recipeGrid.classList.remove('hidden');
+                paginationControls.classList.remove('hidden');
+            });
+        };
+        
+        // --- FUNCIONES DE RENDERIZADO Y PAGINACIÓN ---
+
+        const renderRecipes = (recipesToRender) => {
+            recipeGrid.innerHTML = '';
+            
+            const startIndex = (currentPage - 1) * recipesPerPage;
+            const endIndex = startIndex + recipesPerPage;
+            const paginatedRecipes = recipesToRender.slice(startIndex, endIndex);
+
+            if (paginatedRecipes.length === 0 && currentPage > 1) {
+                currentPage--;
+                renderRecipes(recipesToRender);
+                return;
+            }
+
+            paginatedRecipes.forEach(recipe => {
+                const card = document.createElement('div');
+                card.className = 'bg-white rounded-lg shadow-lg overflow-hidden cursor-pointer transition-all duration-300 card-hover';
+                card.innerHTML = `
+                    <img src="${recipe.image}" alt="[Imagen de ${recipe.name}]" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">${recipe.name}</h3>
+                        <p class="text-gray-600 text-sm">${recipe.description.substring(0, 80)}...</p>
+                    </div>
+                `;
+                card.addEventListener('click', () => showDetailView(recipe.id));
+                recipeGrid.appendChild(card);
+            });
+
+            renderPaginationControls(recipesToRender.length);
+        };
+
+        const renderPaginationControls = (totalRecipes) => {
+            paginationControls.innerHTML = '';
+            const totalPages = Math.ceil(totalRecipes / recipesPerPage);
+
+            if (totalPages <= 1) return;
+
+            // Botón Anterior
+            const prevButton = document.createElement('button');
+            prevButton.textContent = 'Anterior';
+            prevButton.className = `px-4 py-2 mx-1 rounded-lg ${currentPage === 1 ? 'bg-gray-200 text-gray-400 cursor-not-allowed' : 'bg-white text-gray-700 hover:bg-gray-100'}`;
+            prevButton.disabled = currentPage === 1;
+            prevButton.addEventListener('click', () => {
+                if (currentPage > 1) {
+                    currentPage--;
+                    renderRecipes(currentFilteredRecipes);
+                }
+            });
+            paginationControls.appendChild(prevButton);
+
+            // Botones de Página
+            for (let i = 1; i <= totalPages; i++) {
+                const pageButton = document.createElement('button');
+                pageButton.textContent = i;
+                pageButton.className = `px-4 py-2 mx-1 rounded-lg ${currentPage === i ? 'bg-orange-500 text-white' : 'bg-white text-gray-700 hover:bg-gray-100'}`;
+                pageButton.addEventListener('click', () => {
+                    currentPage = i;
+                    renderRecipes(currentFilteredRecipes);
+                });
+                paginationControls.appendChild(pageButton);
+            }
+
+            // Botón Siguiente
+            const nextButton = document.createElement('button');
+            nextButton.textContent = 'Siguiente';
+            nextButton.className = `px-4 py-2 mx-1 rounded-lg ${currentPage === totalPages ? 'bg-gray-200 text-gray-400 cursor-not-allowed' : 'bg-white text-gray-700 hover:bg-gray-100'}`;
+            nextButton.disabled = currentPage === totalPages;
+            nextButton.addEventListener('click', () => {
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    renderRecipes(currentFilteredRecipes);
+                }
+            });
+            paginationControls.appendChild(nextButton);
+        };
+
+        const renderCategories = () => {
+            const categories = [...new Set(recipes.map(recipe => recipe.category))];
+            categories.sort();
+            categoriesContainer.innerHTML = '';
+            categories.forEach(category => {
+                const button = document.createElement('button');
+                button.className = 'bg-orange-500 text-white px-6 py-3 rounded-full hover:bg-orange-600 transition-colors text-lg font-semibold';
+                button.textContent = category;
+                button.addEventListener('click', () => {
+                    currentFilteredRecipes = recipes.filter(recipe => recipe.category === category);
+                    currentPage = 1;
+                    showHomeView();
+                    renderRecipes(currentFilteredRecipes);
+                });
+                categoriesContainer.appendChild(button);
+            });
+        };
+
+        // --- EVENTOS ---
+        
+        const resetToHome = (e) => {
+            e.preventDefault();
+            searchInput.value = '';
+            currentFilteredRecipes = [...recipes];
+            currentPage = 1;
+            showHomeView();
+            renderRecipes(currentFilteredRecipes);
+        };
+
+        [homeLink, brandLink].forEach(link => link.addEventListener('click', resetToHome));
+        
+        categoriesLink.addEventListener('click', (e) => { e.preventDefault(); showCategoriesView(); });
+        aboutLink.addEventListener('click', (e) => { e.preventDefault(); showAboutView(); });
+
+        searchInput.addEventListener('keyup', () => {
+            const searchTerm = searchInput.value.toLowerCase();
+            currentFilteredRecipes = recipes.filter(recipe => 
+                recipe.name.toLowerCase().includes(searchTerm)
+            );
+            currentPage = 1;
+            renderRecipes(currentFilteredRecipes);
+        });
+
+        // --- INICIALIZACIÓN ---
+        showHomeView();
+        renderRecipes(currentFilteredRecipes);
+        renderCategories();
+    </script>
+</body>
+</html>
